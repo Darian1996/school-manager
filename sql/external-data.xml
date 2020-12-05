@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data>
+  <table-set>
+    <table path="school_manager.login_role_user">
+      <table path="school_manager.login_role" from="role_id" to="id"/>
+    </table>
+    <table path="school_manager.login_menu">
+      <table path="school_manager.login_role_menu" from="id" to="menu_id"/>
+    </table>
+    <table path="school_manager.login_role_permission">
+      <table path="school_manager.login_permission" from="permission_id" to="id"/>
+      <table path="school_manager.login_role" from="role_id" to="id"/>
+    </table>
+    <table path="school_manager.login_permission">
+      <table path="school_manager.login_permission_security" from="id" to="permission_id"/>
+    </table>
+    <table path="school_manager.login_role">
+      <table path="school_manager.login_role_menu" from="id" to="role_id"/>
+    </table>
+    <table path="school_manager.login_user">
+      <table path="school_manager.login_role_user" from="id" to="user_id"/>
+    </table>
+    <table path="school_manager.login_security">
+      <table path="school_manager.login_permission_security" from="id" to="security_id"/>
+    </table>
+  </table-set>
+</data>

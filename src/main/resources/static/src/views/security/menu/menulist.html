@@ -1,0 +1,179 @@
+<title>前端菜单管理</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>用户</cite></a>
+        <a><cite>前端菜单管理</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+        <H1>菜单icon链接：https://www.layui.com/doc/element/icon.html#table
+
+            <a target="_blank" href="https://www.layui.com/doc/element/icon.html#table">
+                跳转
+            </a>
+        </h1>
+        <div class="layui-form layui-card-header layuiadmin-card-header-auto"
+             lay-filter="layadmin-user-menu-formlist">
+
+        </div>
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                <button class="layui-btn layuiadmin-btn-menu" data-type="batchdel">
+                    <i class="layui-icon layui-icon-delete"/>禁用
+                </button>
+                <button class="layui-btn layuiadmin-btn-menu" data-type="add">
+                    <i class="layui-icon layui-icon-add-circle"/>添加一级菜单
+                </button>
+            </div>
+
+            <table id="LAY-user-back-menu" lay-filter="LAY-user-back-menu"></table>
+
+
+            <script type="text/html" id="super-parent-menu">
+                {{#  if(d.parentId == '0'){ }}
+                <button class="layui-btn layui-btn-xs">一级</button>
+                {{#  } else { }}
+                {{#  } }}
+            </script>
+            <script type="text/html" id="super-parent-menuId">
+                {{#  if(d.parentId == '0'){ }}
+                {{#  } else { }}
+                {{ d.parentId }}
+                {{#  } }}
+            </script>
+
+            <script type="text/html" id="menu-icon-id">
+                <i class="layui-icon {{d.icon}}"></i>
+            </script>
+
+
+            <script type="text/html" id="buttonTpl">
+                {{#  if(d.isDeleted == '0'){ }}
+                <button class="layui-btn layui-btn-xs">已启用</button>
+                {{#  } else { }}
+                <button class="layui-btn layui-btn-primary layui-btn-xs">未启用</button>
+                {{#  } }}
+            </script>
+
+            <script type="text/html" id="table-user-menu-delete">
+                {{#  if(d.parentId == '0'){ }}
+                <a class="layui-btn layui-btn-xs" lay-event="addChildrenMenu"><i
+                        class="layui-icon layui-icon-add-circle"></i>添加子节点</a>
+                {{#  } else { }}
+                <a class="layui-btn layui-btn-disabled layui-btn-xs"><i class="layui-icon layui-icon-add-circle"></i>添加子节点</a>
+                {{#  } }}
+
+                <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit"><i
+                        class="layui-icon layui-icon-edit"></i>编辑</a>
+
+                {{#  if(d.isDeleted == '0'){ }}
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="disable"><i
+                        class="layui-icon layui-icon-delete"></i>禁用</a>
+                {{#  } else { }}
+                <a class="layui-btn layui-btn-xs" lay-event="enable"><i class="layui-icon layui-icon-add-circle"></i>启用</a>
+                {{#  } }}
+            </script>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('useradmin', layui.factory('useradmin')).use(['admin', 'useradmin', 'table'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , view = layui.view
+            , table = layui.table
+            , form = layui.form;
+
+        form.render(null, 'layadmin-user-menu-formlist');
+
+        //搜索角色
+        form.on('select(LAY-user-adminrole-type)', function (data) {
+            //执行重载
+            table.reload('LAY-user-back-menu', {
+                where: {
+                    role: data.value
+                }
+            });
+        });
+
+        //事件
+        var active = {
+            batchdel: function () {
+                var checkStatus = table.checkStatus('LAY-user-back-menu')
+                    , checkData = checkStatus.data; //得到选中的数据
+
+                console.log(checkStatus)
+                if (checkData.length === 0) {
+                    return layer.msg('请选择数据');
+                }
+
+                layer.confirm('确定禁用吗？', function (index) {
+                    console.log('已经选择的要禁用的数据：', checkData);
+                    // 禁用全部的数据，然后未完成 ajax 传值。
+                    let menuIdList = [];
+                    checkData.forEach((row, index) => {
+                        menuIdList.push(row.id);
+                    })
+                    console.log('menuIdList', menuIdList)
+
+                    admin.req({
+                            url: '/menu/listDisable',
+                            data: {
+                                "menuIdList": menuIdList
+                            },
+                            done: function () {
+
+                                table.reload('LAY-user-back-menu'); //重载表格
+                                console.log('重载表格成功');
+                                customBase.alertCustomMsg('禁用接口列表成功');
+
+                            }
+                        }
+                        , 'post'
+                    );
+
+                });
+            },
+            add: function () {
+                admin.popup({
+                    title: '添加新的一级菜单',
+                    area: ['500px', '480px'],
+                    id: 'LAY-popup-menu-add',
+                    success: function (layero, index) {
+                        view(this.id).render('security/menu/menuform').done(function () {
+                            form.render(null, 'layuiadmin-form-menu');
+
+                            //监听提交
+                            form.on('submit(LAY-user-menu-submit)', function (data) {
+                                var field = data.field; //获取提交的字段
+                                console.log('添加新接口字段：', field);
+
+                                //提交 Ajax 成功后，关闭当前弹层并重载表格
+                                admin.req({
+                                        url: '/menu/addOrUpdate',
+                                        data: field,
+                                        done: function (res) {
+                                            layui.table.reload('LAY-user-back-menu'); //重载表格
+                                            customBase.alertCustomMsg('添加成功');
+                                            layer.close(index); //执行关闭
+                                        }
+                                    }
+                                    , 'post'
+                                );
+                            });
+                        });
+                    }
+                });
+            }
+        }
+        $('.layui-btn.layuiadmin-btn-menu').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>

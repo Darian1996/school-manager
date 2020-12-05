@@ -1,0 +1,95 @@
+<title>设置学校的资料</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>设置</cite></a>
+        <a><cite>设置学校的资料</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">设置学校的资料</div>
+                <div class="layui-card-body" pad15>
+
+                    <div class="layui-form" id="layui-teacher-school-school-form" lay-filter="layui-teacher-school-school-form">
+                        <script type="text/html" template>
+                            <input type="hidden" name="id" value="{{ d.id || '' }}" autocomplete="off"
+                                   readonly class="layui-input" maxlength="20">
+                        </script>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">学校名字</label>
+                            <div class="layui-input-inline">
+                                <script type="text/html" template>
+                                    <input type="text" name="name" value="{{ d.name || '' }}" autocomplete="off"
+                                           placeholder="请输入学校名字" lay-verify="required" class="layui-input" maxlength="20">
+                                </script>
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">最多 20 个字符</div>
+                        </div>
+
+
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">详细介绍</label>
+                            <div class="layui-input-block">
+                                <script type="text/html" template>
+                                    <textarea name="description" placeholder="请输入学校详细介绍"
+                                              lay-verify="required" class="layui-textarea">{{ d.description || '' }}</textarea>
+                                </script>
+                            </div>
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="setschoolinfo">确认修改</button>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <script type="text/html" template>
+                                <iframe src="/start/weekly-course.html?bizType=SCHOOL&bizId={{ d.id || '' }}"
+                                        frameborder="0" class="layadmin-iframe"
+                                        style="height: 800px;position:relative"/>
+                            </script>
+                        </div>
+                        <!--form end-->
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* set.js */
+    layui.use('set', layui.factory('set')).use(['set', 'admin'], function () {
+        var $ = layui.jquery
+            , layer = layui.layer
+            , setter = layui.setter
+            , admin = layui.admin
+            , view = layer.view
+            , form = layui.form;
+
+        // 查询学校信息
+        admin.req({
+            url: '/school/getOne',
+            done: function (res) {
+                let data = res.data;
+                console.log('/school/getOne data', data);
+
+                form.val('layui-teacher-school-school-form', {
+                    id: data.id,
+                    name: data.name,
+                    description: data.description
+                });
+            }
+        });
+
+
+    });
+</script>

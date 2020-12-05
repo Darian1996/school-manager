@@ -1,0 +1,281 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>设置学校的资料</title>
+    <link rel="stylesheet" href="layui/css/layui.css" media="all">
+</head>
+<body>
+
+<div class="layui-row layui-col-space15">
+    <div class="layui-col-md12">
+        <div class="layui-card">
+            <div class="layui-card-body" pad15>
+                <div class="layui-form layui-card-header layuiadmin-card-header-auto">
+
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <div class="layui-input-block">
+                                <input id="weekly_course_biz_type" type="text" readonly value="bizType"
+                                       autocomplete="off"
+                                       class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <div class="layui-input-block">
+                                学校的课程表，重点关注上课；
+                                分组的课程表，重点关注不上课；
+                                教师的课程表，重点关注不上课；
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-card-body">
+
+                    <table id="school-class-range-weekly" lay-filter="school-class-range-weekly">
+
+                        <script type="text/html" id="weekly-courser-one-checkbox-id">
+                            {{#  if(d.one == '1'){ }}
+                            <button class="layui-btn layui-btn-sm" lay-event="one">上课</button>
+                            {{#  } else { }}
+                            <button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="one">不上课</button>
+                            {{#  } }}
+                        </script>
+                        <script type="text/html" id="weekly-courser-two-checkbox-id">
+                            {{#  if(d.two == '1'){ }}
+                            <button class="layui-btn layui-btn-sm" lay-event="two">上课</button>
+                            {{#  } else { }}
+                            <button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="two">不上课</button>
+                            {{#  } }}
+                        </script>
+                        <script type="text/html" id="weekly-courser-three-checkbox-id">
+                            {{#  if(d.three == '1'){ }}
+                            <button class="layui-btn layui-btn-sm" lay-event="three">上课</button>
+                            {{#  } else { }}
+                            <button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="three">不上课</button>
+                            {{#  } }}
+                        </script>
+                        <script type="text/html" id="weekly-courser-four-checkbox-id">
+                            {{#  if(d.four == '1'){ }}
+                            <button class="layui-btn layui-btn-sm" lay-event="four">上课</button>
+                            {{#  } else { }}
+                            <button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="four">不上课</button>
+                            {{#  } }}
+                        </script>
+                        <script type="text/html" id="weekly-courser-five-checkbox-id">
+                            {{#  if(d.five == '1'){ }}
+                            <button class="layui-btn layui-btn-sm" lay-event="five">上课</button>
+                            {{#  } else { }}
+                            <button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="five">不上课</button>
+                            {{#  } }}
+                        </script>
+
+                        <script type="text/html" id="weekly-courser-six-checkbox-id">
+                            {{#  if(d.six == '1'){ }}
+                            <button class="layui-btn layui-btn-sm" lay-event="six">上课</button>
+                            {{#  } else { }}
+                            <button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="six">不上课</button>
+                            {{#  } }}
+                        </script>
+                        <script type="text/html" id="weekly-courser-seven-checkbox-id">
+                            {{#  if(d.seven == '1'){ }}
+                            <button class="layui-btn layui-btn-sm" lay-event="seven">上课</button>
+                            {{#  } else { }}
+                            <button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="seven">不上课</button>
+                            {{#  } }}
+                        </script>
+                        <script type="text/html" id="weekly-courser-eight-checkbox-id">
+                            {{#  if(d.eight == '1'){ }}
+                            <button class="layui-btn layui-btn-sm" lay-event="eight">上课</button>
+                            {{#  } else { }}
+                            <button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="eight">不上课</button>
+                            {{#  } }}
+                        </script>
+                        <script type="text/html" id="weekly-courser-nine-checkbox-id">
+                            {{#  if(d.nine == '1'){ }}
+                            <button class="layui-btn layui-btn-sm" lay-event="nine">上课</button>
+                            {{#  } else { }}
+                            <button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="nine">不上课</button>
+                            {{#  } }}
+                        </script>
+                        <script type="text/html" id="weekly-courser-ten-checkbox-id">
+                            {{#  if(d.ten == '1'){ }}
+                            <button class="layui-btn layui-btn-sm" lay-event="ten">上课</button>
+                            {{#  } else { }}
+                            <button class="layui-btn layui-btn-sm layui-btn-primary" lay-event="ten">不上课</button>
+                            {{#  } }}
+                        </script>
+                    </table>
+                </div>
+
+
+                <div style="padding-bottom: 500px;" id="updateSchoolWeeklyCourseId">
+                    <button class="layui-btn layuiadmin-btn-role" data-type="updateSchoolWeeklyCourse">
+                        <i class="layui-icon"/>更新课程表
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+<script src="layui/layui.js"></script>
+<script>
+
+    layui.config({
+        base: '../src/' //指定 layuiAdmin 项目路径，本地开发用 src，线上用 dist
+        , version: '1.4.0'
+    }).use('index');
+    layui.use('table', layui.factory('table')).use(['table', 'admin'], function () {
+        var $ = layui.jquery
+            , layer = layui.layer
+            , setter = layui.setter
+            , form = layui.form
+            , table = layui.table
+            , admin = layui.admin
+            , router = layui.router();
+        $.extend({
+            getUrlVars: function () {
+                var vars = [], hash;
+                var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                for (var i = 0; i < hashes.length; i++) {
+                    hash = hashes[i].split('=');
+                    vars.push(hash[0]);
+                    vars[hash[0]] = hash[1];
+                }
+                return vars;
+            },
+            getUrlVar: function (name) {
+                return $.getUrlVars()[name];
+            }
+        });
+        console.log('school-small.html init.js');
+
+        let bizType = $.getUrlVar('bizType');
+        let bizId = $.getUrlVar('bizId');
+        if (bizType === 'SCHOOL') {
+            $('#weekly_course_biz_type').val('学校的课程表');
+        }
+
+        if (bizId == null) {
+            bizId = 0;
+        }
+
+        let schoolClassWeeklyTable = table.render({
+            elem: '#school-class-range-weekly'
+            // ,url: './json/useradmin/role.json' //模拟接口
+            , url: '/weeklyCourse/getAllByBizTypeAndBizId?bizType=' + bizType + '&bizId=' + bizId
+            , toolbar: true // 开启导出
+            , title: '全校课表' // 导出的文件名
+            , loading: true // 显示加载动画
+            , cols: [
+                [
+                    {field: 'name', title: '', align: 'center'},
+                    {field: 'one', title: '上午第一节课', align: 'center', templet: '#weekly-courser-one-checkbox-id'},
+                    {field: 'two', title: '上午第二节课', align: 'center', templet: '#weekly-courser-two-checkbox-id'},
+                    {field: 'three', title: '上午第三节课', align: 'center', templet: '#weekly-courser-three-checkbox-id'},
+                    {field: 'four', title: '上午第四节课', align: 'center', templet: '#weekly-courser-four-checkbox-id'},
+                    {field: 'five', title: '下午第一节课', align: 'center', templet: '#weekly-courser-five-checkbox-id'},
+                    {field: 'six', title: '下午第二节课', align: 'center', templet: '#weekly-courser-six-checkbox-id'},
+                    {field: 'seven', title: '下午第三节课', align: 'center', templet: '#weekly-courser-seven-checkbox-id'}
+                ]
+            ]
+
+            , text: '对不起，加载出现异常！'
+        });
+
+
+        //监听锁定操作
+        table.on('tool(school-class-range-weekly)', function (obj) {
+            console.log(obj)
+            var data = obj.data //获得当前行数据
+                , layEvent = obj.event; //获得 lay-event 对应的值
+
+            let value = obj.data[layEvent];
+
+
+            console.info('value', value);
+            console.info('value == true ', value == true);
+            console.info('value == false ', value == false);
+
+            if (value == true) {
+                if (layEvent == 'one') {
+                    obj.update({'one': false})
+                } else if (layEvent == 'two') {
+                    obj.update({'two': false})
+                } else if (layEvent == 'three') {
+                    obj.update({'three': false})
+                } else if (layEvent == 'four') {
+                    obj.update({'four': false})
+                } else if (layEvent == 'five') {
+                    obj.update({'five': false})
+                } else if (layEvent == 'six') {
+                    obj.update({'six': false})
+                } else if (layEvent == 'seven') {
+                    obj.update({'seven': false})
+                } else if (layEvent == 'eight') {
+                    obj.update({'eight': false})
+                } else if (layEvent == 'nine') {
+                    obj.update({'nine': false})
+                } else if (layEvent == 'ten') {
+                    obj.update({'ten': false})
+                }
+
+            } else if (value == false) {
+                if (layEvent == 'one') {
+                    obj.update({'one': true})
+                } else if (layEvent == 'two') {
+                    obj.update({'two': true})
+                } else if (layEvent == 'three') {
+                    obj.update({'three': true})
+                } else if (layEvent == 'four') {
+                    obj.update({'four': true})
+                } else if (layEvent == 'five') {
+                    obj.update({'five': true})
+                } else if (layEvent == 'six') {
+                    obj.update({'six': true})
+                } else if (layEvent == 'seven') {
+                    obj.update({'seven': true})
+                } else if (layEvent == 'eight') {
+                    obj.update({'eight': true})
+                } else if (layEvent == 'nine') {
+                    obj.update({'nine': true})
+                } else if (layEvent == 'ten') {
+                    obj.update({'ten': true})
+                }
+            }
+
+        });
+
+
+        active = {
+            // 更新课程表
+            updateSchoolWeeklyCourse: function () { //获取选中数据
+                let tableData = table.cache["school-class-range-weekly"];
+                console.log('table.cache["school-class-range-weekly"]', tableData);
+
+                admin.req({
+                        url: '/weeklyCourse/updateDTOList',
+                        data: {data: JSON.stringify(tableData)},
+                        done: function (res) {
+                            schoolClassWeeklyTable.reload();
+                            layer.msg('更新课程表成功')
+                        }
+                    }
+                    , 'post'
+                );
+            }
+        };
+
+        $('#updateSchoolWeeklyCourseId .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    });
+</script>
+</html>

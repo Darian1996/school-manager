@@ -1,0 +1,53 @@
+<title>智能排课系统</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>用户</cite></a>
+        <a><cite>智能排课系统</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-card">
+
+        <div class="layui-card-body">
+            <div style="padding-bottom: 10px;">
+                <button class="layui-btn layuiadmin-btn-rangecourse" data-type="rangecourse">智能排课系统开始</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use('useradmin', layui.factory('useradmin')).use(['admin', 'useradmin', 'table'], function () {
+        var $ = layui.$
+            , admin = layui.admin
+            , view = layui.view
+            , table = layui.table
+            , form = layui.form;
+
+        //事件
+        var active = {
+            rangecourse: function () {
+                layer.confirm('确定启动智能排课系统？', function (index) {
+
+                    //执行 Ajax 后重载
+                    admin.req({
+                            url: '/rangeCourse/rangeCourse',
+                            done: function (res) {
+                                customBase.alertCustomMsg('启动智能排课系统结束');
+                            }
+                        }
+                        , 'post'
+                    );
+                });
+            }
+        };
+
+        $('.layui-btn.layuiadmin-btn-rangecourse').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>

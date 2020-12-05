@@ -1,0 +1,54 @@
+
+
+<div class="layui-form" lay-filter="layuiadmin-form-classcourseteacher" style="padding: 20px 0 0 0;">
+    <div class="layui-form-item">
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="hidden" name="id" value="{{ d.params.id || '' }}"
+                       placeholder="" readonly  autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">班级Id</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="classesId" value="{{ d.params.classesId || '' }}" lay-verify="required"
+                       placeholder="请输入班级Id" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">课程Id</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="courseId" value="{{ d.params.courseId || '' }}" lay-verify="required"
+                       placeholder="请输入课程Id" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">教师Id</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="teacherId" value="{{ d.params.teacherId || '' }}" lay-verify="required"
+                       placeholder="请输入教师Id" autocomplete="off" class="layui-input">
+            </script>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-classcourseteacherform-front-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['admin', 'form', 'upload'], function(){
+        var $ = layui.$
+            ,form = layui.form
+            ,upload = layui.upload;
+    })
+</script>

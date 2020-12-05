@@ -1,0 +1,158 @@
+<div class="layui-form" lay-filter="layuiadmin-form-role" style="padding: 20px 30px 0 0;">
+    <script type="text/html" template>
+        <input type="hidden" name="id" value="{{ d.params.id || '' }}"
+               placeholder="" autocomplete="off" class="layui-input">
+    </script>
+
+    <script type="text/html" template lay-done="role_form_lay_done_function(d)"/>
+    <div class="layui-form-item">
+
+        <label class="layui-form-label">角色</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="name" value="{{ d.params.name || '' }}"
+                       lay-verify="required" placeholder="请输入角色名"
+                       autocomplete="off" class="layui-input" maxlength="15">
+            </script>
+        </div>
+
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">具体描述</label>
+
+        <!-- 这个class 显示的长度 比较长 -->
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="description" value="{{ d.params.description || '' }}"
+                       lay-verify="required" placeholder="请输入角色描述"
+                       autocomplete="off" class="layui-input" maxlength="30">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">权限范围</label>
+        <div class="layui-input-block" id="layadmin-role-permissionList-checkbox-id">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单范围</label>
+        <div class="layui-input-block" id="layadmin-role-menuList-checkbox-id">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-user-role-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['admin', 'form'], function () {
+        var $ = layui.$
+            , form = layui.form;
+
+    });
+
+
+    role_form_lay_done_function = function (tableOneData) {
+
+
+        console.log("role_add_or_update_data_done init", tableOneData);
+
+        // 已经有的权限的 list
+        let permissionIdList = [];
+        let permissionDOList = [];
+        let menuIdList = [];
+        let menuDTOList = [];
+        if (tableOneData != null && tableOneData.params != null && tableOneData.params.permissionDOList != null) {
+            permissionDOList = tableOneData.params.permissionDOList;
+        }
+
+        if (tableOneData != null && tableOneData.params != null && tableOneData.params.menuDTOList != null) {
+            menuDTOList = tableOneData.params.menuDTOList;
+        }
+
+        for (let i = 0; i < permissionDOList.length; i++) {
+            let tableOnePermissionOne = permissionDOList[i];
+            permissionIdList.push(tableOnePermissionOne.id);
+        }
+
+        for (let i = 0; i < menuDTOList.length; i++) {
+            let tableOneMenuDTOList = menuDTOList[i];
+            menuIdList.push(tableOneMenuDTOList.id);
+        }
+
+        console.log('这个对象的 permissionIdList', permissionIdList);
+        console.log('这个对象的 menuIdList', menuIdList);
+
+
+        layui.use(['form', 'admin'], function () {
+            let $ = layui.$,
+                admin = layui.admin,
+                form = layui.form;
+            // 查询所有的权限
+            admin.req({
+                    url: '/permission/getAllNotDelete',
+                    done: function (res) {
+                        console.log("查询所有的权限", res);
+                        let data = res.data;
+                        let optionListString = '';
+                        for (let i = 0; i < data.length; i++) {
+                            let optionOne = data[i];
+
+                            if (permissionIdList.indexOf(optionOne.id) !== -1) {
+                                optionListString += '<input type="checkbox" name="permissionIdList[]" checked lay-skin="primary" value="'
+                                    + optionOne.id + '" title="' + optionOne.name + '">';
+                            } else {
+                                optionListString += '<input type="checkbox" name="permissionIdList[]" lay-skin="primary" value="'
+                                    + optionOne.id + '" title="' + optionOne.name + '">';
+                            }
+                        }
+                        console.log("optionListString", optionListString)
+
+                        $('#layadmin-role-permissionList-checkbox-id').html(optionListString)
+
+                        // 查询所有角色之后，再次渲染一下
+                        form.render(null, 'layuiadmin-form-role'); //渲染该模板下的动态表单
+
+                    }
+                }
+            );
+
+            // 查询所有的菜单
+            admin.req({
+                    url: '/menu/getAllNotDelete',
+                    done: function (res) {
+                        console.log("查询所有的菜单", res);
+                        let data = res.data;
+                        let optionListString = '';
+                        for (let i = 0; i < data.length; i++) {
+                            let optionOne = data[i];
+
+                            if (menuIdList.indexOf(optionOne.id) !== -1) {
+                                optionListString += '<input type="checkbox" name="menuIdList[]" checked lay-skin="primary" value="'
+                                    + optionOne.id + '" title="' + optionOne.name + '">';
+                            } else {
+                                optionListString += '<input type="checkbox" name="menuIdList[]" lay-skin="primary" value="'
+                                    + optionOne.id + '" title="' + optionOne.name + '">';
+                            }
+                        }
+                        console.log("optionListString", optionListString)
+
+                        $('#layadmin-role-menuList-checkbox-id').html(optionListString)
+
+                        // 查询所有角色之后，再次渲染一下
+                        form.render(null, 'layuiadmin-form-role'); //渲染该模板下的动态表单
+
+                    }
+                }
+            );
+
+
+        });
+    };
+</script>

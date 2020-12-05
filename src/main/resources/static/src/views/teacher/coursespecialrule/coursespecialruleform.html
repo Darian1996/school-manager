@@ -1,0 +1,136 @@
+<div class="layui-form" lay-filter="layuiadmin-form-coursespecialrule" style="padding: 20px 30px 0 0;">
+    <script type="text/html" template>
+        <input type="hidden" name="id" value="{{ d.params.id || '' }}"
+               placeholder="" autocomplete="off" class="layui-input">
+    </script>
+
+    <script type="text/html" template lay-done="course_special_rule_form_done_function(d)"/>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">业务类型</label>
+
+        <div class="layui-input-block" id="coursespecialrule_bizType_select_radio_id"></div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">业务Id</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="bizId" value="{{ d.params.bizId || '' }}"
+                       lay-verify="required" placeholder="请输入业务id"
+                       autocomplete="off" class="layui-input" maxlength="30">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">规则枚举</label>
+
+        <div class="layui-input-block" id="coursespecialrule_ruleString_select_radio_id"></div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">extStr</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="extStr" value="{{ d.params.extStr || '' }}"
+                       placeholder="请输入extStr"
+                       autocomplete="off" class="layui-input" maxlength="30">
+            </script>
+        </div>
+    </div>
+
+
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-user-coursespecialrule-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['admin', 'form'], function () {
+        var $ = layui.$
+            , form = layui.form;
+
+    });
+
+    course_special_rule_form_done_function = function (tableOneData) {
+        console.log("role_form_lay_done_function init", tableOneData);
+        let bizType;
+        let ruleString;
+        if (tableOneData != null && tableOneData.params != null) {
+            bizType = tableOneData.params.bizType;
+            ruleString = tableOneData.params.ruleString;
+        }
+        console.log('这个对象的 bizType ：', bizType);
+        console.log('这个对象的 ruleString ：', ruleString);
+
+        layui.use(['form', 'admin'], function () {
+            let $ = layui.$,
+                admin = layui.admin,
+                form = layui.form;
+            // 查询所有的bizType
+            admin.req({
+                    url: '/courseSpecialRule/getAllBizType',
+                    done: function (res) {
+                        console.log("查询所有的bizType", res);
+                        let data = res.data;
+                        let optionListString = '';
+                        for (let i = 0; i < data.length; i++) {
+                            let optionOne = data[i];
+
+                            if (bizType === optionOne.code) {
+
+                                optionListString += '<input type="radio" name="bizType" value="' + optionOne.code
+                                    + '" title="' + optionOne.desc + '" checked>';
+                            } else {
+                                optionListString += '<input type="radio" name="bizType" value="' + optionOne.code
+                                    + '" title="' + optionOne.desc + '">';
+                            }
+                        }
+                        console.log("optionListString", optionListString)
+
+                        $('#coursespecialrule_bizType_select_radio_id').html(optionListString)
+
+                        form.render(null, 'layuiadmin-form-coursespecialrule'); //渲染该模板下的动态表单
+
+                    }
+                }
+            );
+
+            // 查询所有的RuleString
+            admin.req({
+                    url: '/courseSpecialRule/getAllRuleString',
+                    done: function (res) {
+                        console.log("查询所有的RuleString", res);
+                        let data = res.data;
+                        let optionListString = '';
+                        for (let i = 0; i < data.length; i++) {
+                            let optionOne = data[i];
+
+                            if (ruleString === optionOne.code) {
+
+                                optionListString += '<input type="radio" name="ruleString" value="' + optionOne.code
+                                    + '" title="' + optionOne.desc + '" checked>';
+                            } else {
+                                optionListString += '<input type="radio" name="ruleString" value="' + optionOne.code
+                                    + '" title="' + optionOne.desc + '">';
+                            }
+                        }
+                        console.log("optionListString", optionListString)
+
+                        $('#coursespecialrule_ruleString_select_radio_id').html(optionListString)
+
+                        form.render(null, 'layuiadmin-form-coursespecialrule'); //渲染该模板下的动态表单
+
+                    }
+                }
+            );
+
+        });
+
+    }
+</script>

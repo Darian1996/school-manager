@@ -1,0 +1,129 @@
+<div class="layui-form" lay-filter="layuiadmin-form-gradecourse" style="padding: 20px 30px 0 0;">
+    <script type="text/html" template>
+        <input type="hidden" name="id" value="{{ d.params.id || '' }}"
+               placeholder="" autocomplete="off" class="layui-input">
+    </script>
+
+    <script type="text/html" template lay-done="gradecourse_form_lay_done_function(d)"/>
+    <div class="layui-form-item">
+        <label class="layui-form-label">年级id</label>
+
+        <div class="layui-input-block" id="gradecourse_gradeId_select_radio_id"></div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">课程id</label>
+
+        <div class="layui-input-block" id="gradecourse_courseId_select_radio_id"></div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">课程节数</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="courseCount" value="{{ d.params.courseCount || '' }}"
+                       lay-verify="required" placeholder="请输入课程节数"
+                       autocomplete="off" class="layui-input" maxlength="30">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-user-gradecourse-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['admin', 'form'], function () {
+        var $ = layui.$
+            , form = layui.form;
+
+    });
+
+
+    gradecourse_form_lay_done_function = function (tableOneData) {
+
+
+        console.log("gradecourse_form_lay_done_function init, tableOneData", tableOneData);
+
+        // 已经有的权限的 list
+        let gradeId;
+        let courseId;
+        if (tableOneData != null && tableOneData.params != null) {
+            gradeId = tableOneData.params.gradeId;
+            courseId = tableOneData.params.courseId;
+        }
+        console.log('这个对象的 gradeId ：', gradeId);
+        console.log('这个对象的 courseId ：', courseId);
+
+
+        layui.use(['form', 'admin'], function () {
+            let $ = layui.$,
+                admin = layui.admin,
+                form = layui.form;
+            // 查询所有的年级
+            admin.req({
+                    url: '/grade/getAllNotDelete',
+                    done: function (res) {
+                        console.log("查询所有的年级", res);
+                        let data = res.data;
+                        let optionListString = '';
+                        for (let i = 0; i < data.length; i++) {
+                            let optionOne = data[i];
+
+                            if (gradeId == optionOne.id) {
+
+                                optionListString += '<input type="radio" name="gradeId" value="' + optionOne.id
+                                    + '" title="' + optionOne.name + '" checked>';
+                            } else {
+                                optionListString += '<input type="radio" name="gradeId" value="' + optionOne.id
+                                    + '" title="' + optionOne.name + '">';
+                            }
+                        }
+                        console.log("optionListString", optionListString)
+
+                        $('#gradecourse_gradeId_select_radio_id').html(optionListString)
+
+                        // 查询所有年级之后，再次渲染一下
+                        form.render(null, 'layuiadmin-form-gradecourse'); //渲染该模板下的动态表单
+
+                    }
+                }
+            );
+
+            // 查询所有的课程
+            admin.req({
+                    url: '/course/getAllNotDelete',
+                    done: function (res) {
+                        console.log("查询所有的课程", res);
+                        let data = res.data;
+                        let optionListString = '';
+                        for (let i = 0; i < data.length; i++) {
+                            let optionOne = data[i];
+
+                            if (courseId == optionOne.id) {
+
+                                optionListString += '<input type="radio" name="courseId" value="' + optionOne.id
+                                    + '" title="' + optionOne.name + '" checked>';
+                            } else {
+                                optionListString += '<input type="radio" name="courseId" value="' + optionOne.id
+                                    + '" title="' + optionOne.name + '">';
+                            }
+                        }
+                        console.log("optionListString", optionListString)
+
+                        $('#gradecourse_courseId_select_radio_id').html(optionListString)
+
+                        // 查询所有课程之后，再次渲染一下
+                        form.render(null, 'layuiadmin-form-gradecourse'); //渲染该模板下的动态表单
+
+                    }
+                }
+            );
+
+        });
+    };
+</script>

@@ -1,0 +1,170 @@
+<!-- 备份了，数组的取值，便利取值， -->
+<title>设置学校的资料</title>
+
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>设置</cite></a>
+        <a><cite>设置学校的资料</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">设置学校的资料</div>
+                <div class="layui-card-body" pad15>
+
+                    <div class="layui-form" lay-filter="layui-teacher-school-school-form">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">学校名字</label>
+                            <div class="layui-input-inline">
+                                <script type="text/html" template>
+                                    <input type="text" name="name" value="{{ d.name || '' }}" autocomplete="off"
+                                           placeholder="请输入学校" class="layui-input" maxlength="20">
+                                </script>
+                            </div>
+                            <div class="layui-form-mid layui-word-aux">最多 20 个字符</div>
+                        </div>
+
+
+                        <div class="layui-form-item layui-form-text">
+                            <label class="layui-form-label">详细介绍</label>
+                            <div class="layui-input-block">
+                                <textarea name="remarks" placeholder="请输入内容" class="layui-textarea"></textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn" lay-submit lay-filter="setmyinfo">确认修改</button>
+                                <button type="reset" class="layui-btn layui-btn-primary">重新填写</button>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="layui-card">
+
+                        <div class="layui-card-body">
+                            <table id="school-class-range-weekly" lay-filter="school-class-range-weekly">
+
+                                <script type="text/html" id="weekly-courser-one-checkbox-id">
+                                    <input type="checkbox" name="one" value="{{d.one}}" title="上课"
+                                           {{ d.one=='1'?'checked':'' }}
+                                           {{ d.isDeleted=='1'?'disabled':'' }}
+                                    >
+                                </script>
+                                <script type="text/html" id="weekly-courser-two-checkbox-id">
+                                    <input type="checkbox" name="two" value="{{d.two}}" title="上课"
+                                           {{ d.two== 1 ? 'checked' : '' }}
+                                    {{ d.isDeleted=='1'?'disabled':'' }}
+                                    >
+                                </script>
+                                <script type="text/html" id="weekly-courser-three-checkbox-id">
+                                    <input type="checkbox" name="three" value="{{d.three}}" title="上课"
+                                           {{ d.three== 1 ? 'checked' : '' }}
+                                    {{ d.isDeleted=='1'?'disabled':'' }}
+                                    >
+                                </script>
+                                <script type="text/html" id="weekly-courser-four-checkbox-id">
+                                    <input type="checkbox" name="four" value="{{d.four}}" title="上课"
+                                           {{ d.four== 1 ? 'checked' : '' }}
+                                    {{ d.isDeleted=='1'?'disabled':'' }}
+                                    >
+                                </script>
+                                <script type="text/html" id="weekly-courser-five-checkbox-id">
+                                    <input type="checkbox" name="five" value="{{d.five}}" title="上课"
+                                           lay-filter="openOrDeleteCourse"
+                                           {{ d.five== 1 ? 'checked' : '' }}
+                                    {{ d.isDeleted=='1'?'disabled':'' }}
+                                    />
+                                </script>
+                            </table>
+                        </div>
+
+
+                        <div style="padding-bottom: 500px;" id="updateSchoolWeeklyCourseId">
+                            <button class="layui-btn layuiadmin-btn-role" data-type="updateSchoolWeeklyCourse">
+                                <i class="layui-icon"/>更新课程表
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* set.js */
+    layui.use('set', layui.factory('set')).use(['set', 'table'], function () {
+        var $ = layui.jquery
+            , layer = layui.layer
+            , setter = layui.setter
+            , form = layui.form
+            , table = layui.table;
+
+        let schoolClassWeeklyTable = table.render({
+            elem: '#school-class-range-weekly'
+            // ,url: './json/useradmin/role.json' //模拟接口
+            , url: '/weeklyCourse/getAll'
+            , toolbar: true // 开启导出
+            , title: '全校课表' // 导出的文件名
+            , loading: true // 显示加载动画
+            , cols: [[
+                {field: 'name', title: ''}
+                , {field: 'one', title: '星期一', templet: '#weekly-courser-one-checkbox-id'}
+                , {field: 'two', title: '星期二', templet: '#weekly-courser-two-checkbox-id'}
+                , {field: 'three', title: '星期三', templet: '#weekly-courser-three-checkbox-id'}
+                , {field: 'four', title: '星期四', templet: '#weekly-courser-four-checkbox-id'}
+                , {field: 'five', title: '星期五', templet: '#weekly-courser-five-checkbox-id'}
+            ]]
+
+            , text: '对不起，加载出现异常！'
+        });
+        console.log('schoolClassWeeklyTable.data', schoolClassWeeklyTable.data);
+
+        //监听锁定操作
+        form.on('checkbox(openOrDeleteCourse)', function (obj) {
+            let thisName = this.name;
+            layer.alert(JSON.stringify(obj))
+            console.log(obj)
+            // TODO: ssss ajax
+
+            $(this).val(obj.value == "0" ? "1" : "0")
+        });
+
+
+        active = {
+            updateSchoolWeeklyCourse: function () { //获取选中数据
+                console.log('table.cache["school-class-range-weekly"]', table.cache["school-class-range-weekly"]);
+                layer.alert(JSON.stringify(table.cache["school-class-range-weekly"]));
+                let list = []
+                // TODO table 名字需要改 @darian 同一个页面只能保证有一个 table
+                $(".layui-table").find("tr").each((index, data) => {
+                    if (index == 0) {
+                        return;
+                    }
+                    console.log(index, data);
+                    console.log($(data))
+                    let item = {};
+                    $(data).find('input').each((index, data) => {
+                        item[$(data).attr("name")] = $(data).val();
+                    })
+                    list.push(item);
+                })
+                console.log(list)
+            }
+        };
+
+        $('#updateSchoolWeeklyCourseId .layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+
+    });
+</script>

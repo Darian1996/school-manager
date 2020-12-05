@@ -1,0 +1,91 @@
+<div class="layui-form" lay-filter="layuiadmin-form-menu" style="padding: 20px 30px 0 0;">
+    <script type="text/html" template>
+        <input type="hidden" name="id" value="{{ d.params.id || '' }}"
+               placeholder="" autocomplete="off" class="layui-input" readonly="readonly">
+    </script>
+
+    <script type="text/html" template/>
+    <div class="layui-form-item">
+
+        <label class="layui-form-label">菜单标识</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="name" value="{{ d.params.name || '' }}"
+                       lay-verify="required" placeholder="请输入菜单标识"
+                       autocomplete="off" class="layui-input" maxlength="30">
+            </script>
+        </div>
+
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单描述</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="title" value="{{ d.params.title || '' }}"
+                       lay-verify="required" placeholder="请输入菜单描述"
+                       autocomplete="off" class="layui-input" maxlength="30">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">菜单图标</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="icon" value="{{ d.params.icon || '' }}"
+                       placeholder="请输入菜单图标"
+                       autocomplete="off" class="layui-input" maxlength="30">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">跳转链接</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="jump" value="{{ d.params.jump || '' }}"
+                       lay-verify="required" placeholder="请输入菜单描述"
+                       autocomplete="off" class="layui-input" maxlength="70">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">父级菜单Id</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="parentId" value="{{ d.params.parentId || '0' }}"
+                       lay-verify="number" placeholder="请输入父级菜单Id"
+                       autocomplete="off" class="layui-input" maxlength="5" readonly="readonly">
+            </script>
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">排序</label>
+        <div class="layui-input-inline">
+            <script type="text/html" template>
+                <input type="text" name="orderId" value="{{ d.params.orderId || '' }}"
+                       lay-verify="number" placeholder="请输入排序序号"
+                       autocomplete="off" class="layui-input" maxlength="5">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-user-menu-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['admin', 'form'], function () {
+        var $ = layui.$
+            , form = layui.form;
+
+    });
+</script>

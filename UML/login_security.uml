@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>DATABASE</ID>
+  <OriginalElement>56e39f8c-f82a-48c8-9c0f-d2de52c5a290.TABLE:school_manager.login_security</OriginalElement>
+  <nodes>
+    <node x="472.0" y="284.5">56e39f8c-f82a-48c8-9c0f-d2de52c5a290.TABLE:school_manager.login_permission</node>
+    <node x="377.0" y="569.0">56e39f8c-f82a-48c8-9c0f-d2de52c5a290.TABLE:school_manager.login_role_permission</node>
+    <node x="13.0" y="796.0">56e39f8c-f82a-48c8-9c0f-d2de52c5a290.TABLE:school_manager.login_user</node>
+    <node x="252.00000000000003" y="227.0">56e39f8c-f82a-48c8-9c0f-d2de52c5a290.TABLE:school_manager.login_menu</node>
+    <node x="704.0" y="273.0">56e39f8c-f82a-48c8-9c0f-d2de52c5a290.TABLE:school_manager.login_security</node>
+    <node x="532.25" y="0.0">56e39f8c-f82a-48c8-9c0f-d2de52c5a290.TABLE:school_manager.login_permission_security</node>
+    <node x="56.0" y="284.5">56e39f8c-f82a-48c8-9c0f-d2de52c5a290.TABLE:school_manager.login_role</node>
+    <node x="0.0" y="569.0">56e39f8c-f82a-48c8-9c0f-d2de52c5a290.TABLE:school_manager.login_role_user</node>
+    <node x="148.00000000000003" y="0.0">56e39f8c-f82a-48c8-9c0f-d2de52c5a290.TABLE:school_manager.login_role_menu</node>
+  </nodes>
+  <notes />
+  <edges />
+  <settings layout="Hierarchic Group" zoom="0.6188642925890279" x="446.5" y="509.5" />
+  <SelectedNodes>
+    <node>56e39f8c-f82a-48c8-9c0f-d2de52c5a290.TABLE:school_manager.login_menu</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>键列</Category>
+    <Category>列</Category>
+    <Category>虚拟外键</Category>
+  </Categories>
+</Diagram>
+

@@ -1,0 +1,45 @@
+<div class="layui-form" lay-filter="layuiadmin-form-grade" style="padding: 20px 30px 0 0;">
+    <script type="text/html" template>
+        <input type="hidden" name="id" value="{{ d.params.id || '' }}"
+               placeholder="" autocomplete="off" class="layui-input">
+    </script>
+
+    <script type="text/html" template/>
+    <div class="layui-form-item">
+        <label class="layui-form-label">年级序号</label>
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="gradeNumber" value="{{ d.params.gradeNumber || '' }}"
+                       lay-verify="required" placeholder="请输入年级序号"
+                       autocomplete="off" class="layui-input" maxlength="30">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">具体名字</label>
+
+        <div class="layui-input-block">
+            <script type="text/html" template>
+                <input type="text" name="name" value="{{ d.params.name || '' }}"
+                       lay-verify="required" placeholder="请输入年级名字"
+                       autocomplete="off" class="layui-input" maxlength="30">
+            </script>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label"></label>
+        <div class="layui-input-inline">
+            <input type="button" lay-submit lay-filter="LAY-user-grade-submit" value="确认" class="layui-btn">
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['admin', 'form'], function () {
+        var $ = layui.$
+            , form = layui.form;
+
+    });
+</script>
