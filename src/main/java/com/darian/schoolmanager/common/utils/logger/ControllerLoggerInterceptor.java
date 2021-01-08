@@ -13,4 +13,8 @@ public class ControllerLoggerInterceptor extends BaseLogInterceptor {
 
     private Logger LOGGER = LoggerFactory.getLogger(ControllerLoggerInterceptor.class);
 
+    @Override
+    protected Logger getPrivateLOGGER() {
+        return LOGGER;
+    }
 }

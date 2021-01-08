@@ -4,7 +4,6 @@ import com.darian.schoolmanager.common.modle.CustomerResponse;
 import com.darian.schoolmanager.common.utils.JSONUtils;
 import com.darian.schoolmanager.common.utils.logger.DO.TraceLoggerModuleDO;
 import com.darian.schoolmanager.common.utils.logger.annotations.ControllerLogger;
-import com.darian.schoolmanager.common.utils.logger.service.TraceLoggerService;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
@@ -18,10 +17,15 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public abstract class BaseLogInterceptor implements MethodInterceptor {
 
     private Logger LOGGER = LoggerFactory.getLogger(BaseLogInterceptor.class);
+
+    protected abstract Logger getPrivateLOGGER();
+
+    private Boolean logDetail = Boolean.FALSE;
 
     /**
      * 日志默认值
@@ -75,9 +79,18 @@ public abstract class BaseLogInterceptor implements MethodInterceptor {
 
     private ApplicationContext applicationContext;
 
-
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
+        Logger privateLOGGER = getPrivateLOGGER();
+        if (Objects.nonNull(privateLOGGER)) {
+            LOGGER = privateLOGGER;
+        }
+
+        Boolean logDetailProperty = applicationContext.getEnvironment().getProperty("baseLogInterceptor.logDetail", Boolean.class);
+        if (Objects.nonNull(logDetailProperty)) {
+            logDetail = logDetailProperty;
+        }
+
     }
 
     @Override
@@ -259,33 +272,48 @@ public abstract class BaseLogInterceptor implements MethodInterceptor {
         sb.append(TIME_UNIT);
         sb.append(LOG_PARAM_SUFFIX);
 
-        // 参数已经有 "()" 号了
-        sb.append(traceLoggerModuleDO.getArgsMsg());
-
-        sb.append(LOG_PARAM_PREFIX);
-        sb.append(traceLoggerModuleDO.getResultMsg());
-        sb.append(LOG_PARAM_SUFFIX);
+        if (isNotEmpty(traceLoggerModuleDO.getArgsMsg())) {
+            // 参数已经有 "()" 号了
+            sb.append(traceLoggerModuleDO.getArgsMsg());
+        }
+        if (isNotEmpty(traceLoggerModuleDO.getResultMsg())) {
+            sb.append(LOG_PARAM_PREFIX);
+            sb.append(traceLoggerModuleDO.getResultMsg());
+            sb.append(LOG_PARAM_SUFFIX);
+        }
 
         sb.append(LOG_SUFFIX);
 
         return sb.toString().replaceAll("\n", "");
     }
 
+    public static boolean isEmpty(CharSequence cs) {
+        return cs == null || cs.length() == 0;
+    }
+
+    public static boolean isNotEmpty(CharSequence cs) {
+        return !isEmpty(cs);
+    }
+
     private TraceLoggerModuleDO builderTraceLoggerModuleDO(String classSimpleName, String methodName, boolean isSuccess,
-                                                           long costTimes, Object[] args, Object result, ControllerLogger controllerLogger) {
+                                                           long costTimes, Object[] args, Object result,
+                                                           ControllerLogger controllerLogger) {
         TraceLoggerModuleDO traceLoggerModuleDO = new TraceLoggerModuleDO();
         traceLoggerModuleDO.setTraceId(getTraceId());
         traceLoggerModuleDO.setClassSimpleName(classSimpleName);
         traceLoggerModuleDO.setMethodName(methodName);
         traceLoggerModuleDO.setSuccess(isSuccess ? YES : NO);
         traceLoggerModuleDO.setCostTimes(costTimes);
-        // 默认打印
-        if (controllerLogger == null || controllerLogger.needParams()) {
-            traceLoggerModuleDO.setArgsMsg(getMsgOfArgs(args));
-        }
-        // 默认打印
-        if (controllerLogger == null || controllerLogger.needResult()) {
-            traceLoggerModuleDO.setResultMsg(getMsg(result));
+        // 默认不打印， logDetail 不打开，params 和 result 不会打印
+        if (logDetail) {
+            // controllerLogger 默认打印
+            if (controllerLogger == null || controllerLogger.needParams()) {
+                traceLoggerModuleDO.setArgsMsg(getMsgOfArgs(args));
+            }
+
+            if (controllerLogger == null || controllerLogger.needResult()) {
+                traceLoggerModuleDO.setResultMsg(getMsg(result));
+            }
         }
 
         traceLoggerModuleDO.setLoggerTime(LocalDateTime.now());
