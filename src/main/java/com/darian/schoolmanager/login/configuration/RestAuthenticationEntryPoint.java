@@ -41,8 +41,10 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
         String requestURI = httpServletRequest.getRequestURI();
         Map<String, Object> dataBody = new HashMap<>();
         dataBody.put("requestURI", requestURI);
+        dataBody.put("loginURI", "/start/index.html");
         dataBody.put("ExceptionName", authenticationException.getClass().getSimpleName());
         dataBody.put("ExceptionMessage", authenticationException.getMessage());
+        dataBody.put("goto", "没有登陆，请点击 loginURI 去登陆");
 
         CustomerResponse result;
         if (authenticationException instanceof AnonymousAuthenticationException) {
