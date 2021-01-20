@@ -13,6 +13,7 @@ import com.darian.schoolmanager.login.DTO.request.UserAddOrUpdateRequest;
 import com.darian.schoolmanager.login.DTO.request.UserAdminInitUserRequest;
 import com.darian.schoolmanager.login.DTO.request.UserGetAllRequest;
 import com.darian.schoolmanager.login.mapper.UserMapper;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,7 @@ public class UserService extends ServiceImpl<UserMapper, UserDO>
      * 密码加密算法
      */
     @Resource(name = "passwordEncoder")
+    @Lazy
     private PasswordEncoder passwordEncoder;
 
     public UserDO selectByUsername(String userName) {

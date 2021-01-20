@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthUserService authUserService;
 
     @Resource(name = "passwordEncoder")
+    @Lazy
     private PasswordEncoder passwordEncoder;
 
     @Resource(name = "restAuthenticationEntryPoint")
