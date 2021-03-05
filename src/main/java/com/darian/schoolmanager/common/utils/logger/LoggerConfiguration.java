@@ -33,7 +33,6 @@ public class LoggerConfiguration {
     //    //return controllerLoggerInterceptor.invoke(proceedingJoinPoint);
     //}
 
-
     @Resource
     private ApplicationContext applicationContext;
 
@@ -50,11 +49,13 @@ public class LoggerConfiguration {
         return controllerLoggerInterceptor;
     }
 
-
     @Bean
     public AspectJExpressionPointcut controllerLoggerPointcut() {
         AspectJExpressionPointcut aspectJExpressionPointcut = new AspectJExpressionPointcut();
-        aspectJExpressionPointcut.setExpression("execution(* com.darian.schoolmanager.*.controller..*(..))");
+        aspectJExpressionPointcut.setExpression(
+                "execution(* com.darian.schoolmanager.*.controller..*(..)) and "
+                        + "(@annotation(com.darian.schoolmanager.common.utils.logger.annotations.ControllerLogger) "
+                        + "or  @within(com.darian.schoolmanager.common.utils.logger.annotations.ControllerLogger))");
         return aspectJExpressionPointcut;
     }
 
@@ -66,13 +67,11 @@ public class LoggerConfiguration {
         return defaultPointcutAdvisor;
     }
 
-
     @Resource
     private ServiceLogInterceptor serviceLogInterceptor;
 
     @Resource
     private AspectJExpressionPointcut serviceLoggerPointcut;
-
 
     @Bean
     public ServiceLogInterceptor serviceLogInterceptor() {
@@ -81,11 +80,12 @@ public class LoggerConfiguration {
         return serviceLogInterceptor;
     }
 
-
     @Bean
     public AspectJExpressionPointcut serviceLoggerPointcut() {
         AspectJExpressionPointcut aspectJExpressionPointcut = new AspectJExpressionPointcut();
-        aspectJExpressionPointcut.setExpression("execution(* com.darian.schoolmanager.*.service..*(..))");
+        aspectJExpressionPointcut.setExpression("execution(* com.darian.schoolmanager.*.service..*(..)) and "
+                + "(@annotation(com.darian.schoolmanager.common.utils.logger.annotations.ServiceLogger) "
+                + "or  @within(com.darian.schoolmanager.common.utils.logger.annotations.ServiceLogger))");
         return aspectJExpressionPointcut;
     }
 
@@ -96,6 +96,5 @@ public class LoggerConfiguration {
         defaultPointcutAdvisor.setAdvice(serviceLogInterceptor);
         return defaultPointcutAdvisor;
     }
-
 
 }

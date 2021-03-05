@@ -102,7 +102,12 @@ public abstract class BaseLogInterceptor implements MethodInterceptor {
         String classSimpleName = method.getDeclaringClass().getSimpleName();
         String methodName = method.getName();
 
+        // TODO: ControllerLogger 和 ServiceLogger 分离
         ControllerLogger controllerLogger = methodInvocation.getMethod().getAnnotation(ControllerLogger.class);
+
+        if (controllerLogger == null) {
+            controllerLogger = methodInvocation.getMethod().getDeclaringClass().getAnnotation(ControllerLogger.class);
+        }
 
         // 获取参数
         Object[] args = methodInvocation.getArguments();
