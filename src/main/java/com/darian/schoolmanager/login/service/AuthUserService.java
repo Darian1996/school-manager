@@ -6,6 +6,7 @@ import com.darian.schoolmanager.login.DO.UserDO;
 import com.darian.schoolmanager.login.DTO.MenuDTO;
 import com.darian.schoolmanager.login.DTO.UserDTO;
 import com.darian.schoolmanager.login.configuration.LoginConfiguration;
+import com.darian.schoolmanager.login.configuration.WebSecurityConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -67,7 +68,11 @@ public class AuthUserService implements UserDetailsService {
         }
         UserDO userDO = userService.selectByUsername(username);
         if (Objects.isNull(userDO)) {
-            throw new InternalAuthenticationServiceException("user:[" + username + "]不存在!");
+            /**
+             * {@link WebSecurityConfig#daoAuthenticationProvider()} 之后，就可以捕捉 UsernameNotFoundException
+             */
+            // throw new InternalAuthenticationServiceException("[username]不能为空");
+            throw new UsernameNotFoundException("user:[" + username + "]不存在!");
         }
 
         Long userId = userDO.getId();

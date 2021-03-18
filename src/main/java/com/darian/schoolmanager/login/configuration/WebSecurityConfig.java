@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -64,10 +65,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         /**
          * user Details Service验证
          */
-        auth.userDetailsService(authUserService)
-                .passwordEncoder(passwordEncoder)
+//        auth.userDetailsService(authUserService)
+//                .passwordEncoder(passwordEncoder)
         ;
+        // auth.passwordEncoder(passwordEncoder) 会触发默认的 DaoAuthenticationProvider 的创建
+        // 这里直接 创建自定义的 DaoAuthenticationProvider，
+        auth.authenticationProvider(daoAuthenticationProvider());
     }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
+        daoAuthenticationProvider.setUserDetailsService(authUserService);
+        daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
+        return daoAuthenticationProvider;
+    }
+
 
     @Bean("passwordEncoder")
     public PasswordEncoder passwordEncoder() {
@@ -79,6 +93,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/start/**",
                 "/start/layui/font/**", "/src/**", "/favicon.ico");
     }
+
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
